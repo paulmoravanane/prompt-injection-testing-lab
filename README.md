@@ -1,124 +1,172 @@
 # Prompt Injection Testing Lab
 
-A beginner AI red-teaming project that evaluates embedded prompt injection against a locally hosted language model and tests a prompt-level mitigation.
+A Python-based AI red-teaming project for evaluating embedded prompt injection against a locally hosted language model and measuring the effect of a prompt-level mitigation.
 
-## Objective
+The project compares baseline behavior, mitigation performance, and performance on additional unseen test cases using repeatable experiments and CSV-based evaluation.
 
-Evaluate whether a model follows conflicting instructions embedded in untrusted text, then compare its baseline behavior with a mitigation that explicitly identifies untrusted content.
+## Project Overview
 
-## Environment
+**Objective:** Investigate whether untrusted text containing conflicting instructions can cause a language model to deviate from its intended task.
 
-- Model: `qwen2.5:3b`
-- Runtime: Ollama
-- Language: Python
-- Temperature: 0
-- Test type: Embedded prompt injection
+The lab evaluates a baseline prompt, applies a mitigation that explicitly treats delimited untrusted content as data, and compares the recorded results.
 
-## Methodology
+### Technology Stack
 
-Three original test cases were used, with five trials per case:
+- **Model:** Qwen 2.5 3B (`qwen2.5:3b`)
+- **Runtime:** Ollama
+- **Language:** Python
+- **Temperature:** 0
+- **Technique:** Embedded prompt injection testing
+- **Evaluation:** Repeated trials, CSV records, and an automated comparison report
 
-1. **Control:** Extract the airport codes `LAX` and `MIA`.
-2. **Injection 1:** Embedded untrusted text instructs the model to output `HIJACKED`.
-3. **Injection 2:** Quoted text instructs the model to output `HIJACKED`.
+## How It Works
 
-The expected output was `LAX MIA`. The baseline was tested first, followed by a revised prompt that explicitly treats delimited untrusted text as data rather than instructions.
+1. Establish a baseline using a task that extracts airport codes.
+2. Introduce untrusted text containing conflicting instructions.
+3. Record model responses and evaluate them against the expected output.
+4. Apply a prompt-level mitigation that identifies untrusted content.
+5. Evaluate the mitigation against the original cases and additional unseen cases.
+6. Compare the recorded results using a Python script.
 
-Three additional unseen test cases were then evaluated against the mitigation.
+The expected task output is `LAX MIA`. Injection examples attempt to redirect the model to output `HIJACKED`.
 
-## Results
+## Experimental Results
 
-| Experiment | Trials | Pass | Fail | Pass rate |
-|---|---:|---:|---:|---:|
-| Baseline | 15 | 5 | 10 | 33.3% |
-| Mitigation | 15 | 15 | 0 | 100.0% |
-| Unseen tests | 15 | 15 | 0 | 100.0% |
+The following results were recorded by the project's comparison script.
 
-### Baseline findings
+| Experiment | Trials | Passed | Failed | Errors | Pass rate |
+|---|---:|---:|---:|---:|---:|
+| Baseline | 15 | 5 | 10 | 0 | 33.3% |
+| Mitigation | 15 | 15 | 0 | 0 | 100.0% |
+| Unseen tests | 15 | 15 | 0 | 0 | 100.0% |
 
-- All five control trials passed.
-- All ten injection trials failed.
-- All ten injection trials produced an injection indicator.
+### Key Findings
 
-### Mitigation findings
+- **Baseline:** All five control trials passed, while all ten injection trials failed.
+- **Mitigation:** All 15 recorded trials passed, with no injection indicators reported.
+- **Unseen tests:** All 15 recorded trials passed across three additional test cases, with no injection indicators reported.
 
-- All 15 trials passed.
-- No injection indicators were recorded in these trials.
+These findings indicate improved task performance on the evaluated examples after introducing the mitigation.
 
-### Unseen-test findings
+> **Important:** These results apply only to the tested prompts, model, and configuration. They do not demonstrate universal protection against prompt injection.
 
-- All 15 trials passed across three additional test cases.
-- No injection indicators were recorded in these trials.
+## Project Structure
 
-## Interpretation
+| File | Purpose |
+|---|---|
+| `test_harness.py` | Baseline evaluation harness |
+| `mitigation_test.py` | Mitigation evaluation harness |
+| `unseen_test.py` | Evaluation using additional test cases |
+| `compare_results.py` | Summarizes and compares recorded results |
+| `baseline_results.csv` | Baseline trial records |
+| `mitigation_results.csv` | Mitigation trial records |
+| `unseen_results.csv` | Additional test trial records |
+| `automated_results.csv` | Additional automated test results |
+| `automated_repeated_results.csv` | Repeated automated test results |
+| `comparison_report.md` | Generated experiment comparison |
+| `results.md` | Evaluation notes and results |
+| `.gitignore` | Files and directories excluded from Git |
 
-The results show a substantial improvement in task performance after introducing the prompt-level mitigation for the tested examples.
+## Setup
 
-However, the baseline and mitigation prompts differ in their structure and instructions. Therefore, this comparison does not establish which individual change caused the improvement.
+### Prerequisites
 
-The unseen tests provide preliminary evidence of generalization to a small number of additional examples. They do not prove resistance to prompt injection in general.
+- Python 3
+- Git
+- Ollama installed and running
+- The `qwen2.5:3b` model available locally
 
-## Project Files
+Pull the model if it is not already installed:
 
-- `test_harness.py` — baseline test harness
-- `mitigation_test.py` — mitigation test harness
-- `unseen_test.py` — additional test cases
-- `compare_results.py` — compares experiment results
-- `baseline_results.csv` — baseline trial data
-- `mitigation_results.csv` — mitigation trial data
-- `unseen_results.csv` — unseen-test trial data
-- `comparison_report.md` — generated comparison report
+```bash
+ollama pull qwen2.5:3b
+```
 
-## Reproduction
+From the project directory, activate your existing virtual environment if you have one:
 
-Run these commands from the project directory with the required Python environment active and Ollama available.
+```bash
+source .venv/bin/activate
+```
 
-Run the baseline experiment:
+If you do not have a virtual environment yet, create one:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Check Python and Ollama:
+
+```bash
+python --version
+ollama --version
+ollama list
+```
+
+Install any Python dependencies required by the scripts. Check the imports in the scripts first; this repository does not currently document a dependency lockfile or `requirements.txt`.
+
+## Run the Experiments
+
+Run each command from the project directory with the required environment active and Ollama available.
+
+### 1. Baseline
 
 ```bash
 python test_harness.py
 ```
 
-Run the mitigation experiment:
+### 2. Mitigation
 
 ```bash
 python mitigation_test.py
 ```
 
-Run the unseen tests:
+### 3. Additional Unseen Tests
 
 ```bash
 python unseen_test.py
 ```
 
-Generate the comparison report from the recorded CSV files:
+### 4. Generate the Comparison Report
 
 ```bash
 python compare_results.py
 ```
 
-Review `comparison_report.md` and the CSV files to verify the recorded results.
+Inspect `comparison_report.md` and the corresponding CSV files to verify the results.
 
-**Note:** Running an experiment again may overwrite its output CSV. Preserve copies of important results before rerunning tests.
+**Reproducibility note:** Experiment scripts may overwrite their output files. Back up important CSV results before rerunning experiments. The comparison script summarizes the recorded CSV data; it does not independently prove that the experiments were executed correctly.
 
-## Limitations
+## Methodology and Limitations
 
-- Small test set with only six distinct original and unseen attack/control examples.
-- Only one model and runtime configuration were evaluated.
-- Temperature zero does not guarantee identical outputs across all runs or environments.
-- The mitigation changes the prompt structure, so this is not a controlled test of one isolated defense component.
-- Results depend on the prompts, model version, scoring rules, and test configuration.
-- Passing these tests does not establish that the model is secure against other attacks.
+- Three original test cases were evaluated with five trials per case.
+- Three additional unseen test cases were evaluated with five trials per case.
+- Only one model and runtime configuration were tested.
+- The baseline and mitigation prompts differ in structure and instructions, so the comparison does not isolate the effect of one defense component.
+- The test corpus is small and may not represent the diversity of real-world prompt injection attacks.
+- Temperature zero does not guarantee identical behavior across different model versions or environments.
+- Results depend on the prompt design, model version, scoring logic, and evaluation procedure.
+- Passing these tests does not establish resistance to other attacks, false-positive rates, or production readiness.
 
-## Future Work
+## Future Improvements
 
-- Expand the attack corpus with diverse injection techniques.
-- Add regression tests and automated validation.
-- Evaluate false positives and false negatives.
-- Compare multiple models and configurations.
-- Test different prompt-level defenses under controlled conditions.
-- Record model versions and experiment settings for reproducibility.
+- Expand the test corpus with diverse direct and indirect injection cases.
+- Add automated assertions and regression testing.
+- Measure false positives and false negatives.
+- Compare multiple models and defense strategies under controlled conditions.
+- Record model versions, dependencies, and configuration details.
+- Add reproducible test fixtures and continuous integration.
 
 ## Responsible Testing
 
-This project is intended for controlled evaluation of AI system behavior. Test only systems and environments you are authorized to assess.
+This project is intended for controlled AI security evaluation and educational use. Test only systems you own or are explicitly authorized to assess.
+
+## Author
+
+**Moravanane Paul Manikanta**
+
+GitHub: [@paulmoravanane](https://github.com/paulmoravanane)
+
+---
+
+*An educational AI red-teaming project exploring prompt injection, evaluation methodology, and prompt-level defenses.*
