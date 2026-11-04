@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Prompt Injection Testing Lab — an AI security testing project by Paul Manikanta.">
+  <title>Prompt Injection Testing Lab | Paul Manikanta</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="logo" href="#home">PAUL<span>.</span></a>
+    <nav>
+      <a href="#overview">Overview</a>
+      <a href="#results">Results</a>
+      <a href="#methodology">Methodology</a>
+      <a href="https://github.com/paulmoravanane/prompt-injection-testing-lab" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <p class="eyebrow">AI SECURITY · RED TEAMING · LLM EVALUATION</p>
+      <h1>Testing the limits of<br><span>AI instruction security.</span></h1>
+      <p class="intro">
+        A hands-on AI red-teaming project that evaluates how a language model
+        responds to embedded prompt injection attacks and tests a mitigation approach.
+      </p>
+      <div class="actions">
+        <a class="button primary" href="#results">Explore Results ↓</a>
+        <a class="button secondary" href="https://github.com/paulmoravanane/prompt-injection-testing-lab" target="_blank" rel="noopener noreferrer">View Source ↗</a>
+      </div>
+      <div class="terminal">
+        <div class="terminal-top"><span></span><span></span><span></span> <small>experiment_summary.txt</small></div>
+        <pre><code>PROJECT  : Prompt Injection Testing Lab
+MODEL    : Qwen 2.5:3B
+RUNTIME  : Ollama (local)
+TESTS    : Baseline + Mitigation + Unseen cases
+PURPOSE  : Evaluate instruction-following robustness</code></pre>
+      </div>
+    </section>
+
+    <section class="section" id="overview">
+      <p class="eyebrow">01 / OVERVIEW</p>
+      <h2>Understanding the project</h2>
+      <p class="section-intro">
+        Prompt injection is a security challenge where untrusted text attempts
+        to influence an AI model to ignore or override its intended instructions.
+        This lab compares model behavior across controlled test scenarios.
+      </p>
+      <div class="cards">
+        <article class="card"><div class="number">01</div><h3>Baseline testing</h3><p>Run control and injection scenarios against the model without the tested mitigation.</p></article>
+        <article class="card"><div class="number">02</div><h3>Mitigation testing</h3><p>Evaluate a mitigation approach using the same core task and scoring criteria.</p></article>
+        <article class="card"><div class="number">03</div><h3>Unseen cases</h3><p>Check performance on additional test cases that were not part of the initial set.</p></article>
+      </div>
+    </section>
+
+    <section class="section results-section" id="results">
+      <p class="eyebrow">02 / EXPERIMENTAL RESULTS</p>
+      <h2>Results at a glance</h2>
+      <p class="section-intro">Recorded results from three small experiments with 15 trials in each group.</p>
+      <div class="metrics">
+        <article class="metric"><span>Total trials</span><strong>45</strong><small>Across 3 test groups</small></article>
+        <article class="metric"><span>Baseline pass rate</span><strong>33.3%</strong><small>5 of 15 passed</small></article>
+        <article class="metric"><span>Mitigation pass rate</span><strong>100%</strong><small>15 of 15 passed</small></article>
+        <article class="metric"><span>Unseen-test pass rate</span><strong>100%</strong><small>15 of 15 passed</small></article>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Experiment</th><th>Trials</th><th>Pass</th><th>Fail</th><th>Pass rate</th></tr></thead>
+          <tbody>
+            <tr><td>Baseline</td><td>15</td><td>5</td><td>10</td><td><span class="pill warning">33.3%</span></td></tr>
+            <tr><td>Mitigation</td><td>15</td><td>15</td><td>0</td><td><span class="pill success">100%</span></td></tr>
+            <tr><td>Unseen tests</td><td>15</td><td>15</td><td>0</td><td><span class="pill success">100%</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Important: these are results from a small, local test set. They do not establish that the model or mitigation is secure against all prompt injection attacks.</p>
+    </section>
+
+    <section class="section" id="methodology">
+      <p class="eyebrow">03 / METHODOLOGY</p>
+      <h2>How the lab works</h2>
+      <div class="steps">
+        <div><span>01</span><p><strong>Define a task</strong><br>Set the expected response for a controlled test.</p></div>
+        <div><span>02</span><p><strong>Run test prompts</strong><br>Evaluate benign and adversarial inputs locally.</p></div>
+        <div><span>03</span><p><strong>Record outcomes</strong><br>Compare expected and observed responses in result files.</p></div>
+        <div><span>04</span><p><strong>Compare approaches</strong><br>Review baseline and mitigation outcomes and document limitations.</p></div>
+      </div>
+    </section>
+
+    <section class="section limitation">
+      <p class="eyebrow">04 / RESPONSIBLE EVALUATION</p>
+      <h2>What these results do—and don't—tell us</h2>
+      <p>The experiments demonstrate a repeatable testing workflow, not a comprehensive security certification. Broader evaluation should include more attack variants, repeated runs, additional models, and independent validation of the scoring criteria.</p>
+    </section>
+
+    <section class="contact">
+      <p class="eyebrow">EXPLORE THE CODE</p>
+      <h2>Built to learn. Tested to improve.</h2>
+      <p>Explore the scripts, test cases, and recorded experiment results on GitHub.</p>
+      <a class="button primary" href="https://github.com/paulmoravanane/prompt-injection-testing-lab" target="_blank" rel="noopener noreferrer">Open GitHub Repository ↗</a>
+    </section>
+  </main>
+
+  <footer>
+    <span>Prompt Injection Testing Lab</span>
+    <span>Created by Paul Manikanta · Educational security research</span>
+  </footer>
+</body>
+</html>
